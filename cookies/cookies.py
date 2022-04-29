@@ -61,6 +61,15 @@ class Cookies(commands.Cog):
         context = super().format_help_for_context(ctx)
         return f"{context}\n\nVersion: {self.__version__}"
 
+    async def _get_multiplier(self, ctx):
+        multipliers = []
+        for role in ctx.author.roles:
+            role_multiplier = await self.config.role(role).multiplier()
+            if not role_multiplier:
+                role_multiplier = 1
+            multipliers.append(role_multiplier)
+        return max(multipliers)
+
     @commands.command()
     @commands.guild_only()
     async def cookie(self, ctx: commands.Context):
@@ -82,15 +91,11 @@ class Cookies(commands.Cog):
 
         if cur_time >= next_cookie:
             if amount != 0:
-                multipliers = []
-                for role in ctx.author.roles:
-                    role_multiplier = await self.config.role(role).multiplier()
-                    if not role_multiplier:
-                        role_multiplier = 1
-                    multipliers.append(role_multiplier)
-                amount *= max(multipliers)
+                amount *= await _get_multiplier(ctx)
             else:
                 amount = int(random.choice(list(range(minimum, maximum))))
+                amount *= await _get_multiplier(ctx)
+                print(amount)
             if self._max_balance_check(cookies + amount):
                 return await ctx.send(
                     "Uh oh, you have reached the maximum amount of cookies that you can put in your bag. :frowning:"
