@@ -91,10 +91,10 @@ class Cookies(commands.Cog):
 
         if cur_time >= next_cookie:
             if amount != 0:
-                amount *= await _get_multiplier(ctx)
+                amount *= await self._get_multiplier(ctx)
             else:
                 amount = int(random.choice(list(range(minimum, maximum))))
-                amount *= await _get_multiplier(ctx)
+                amount *= await self._get_multiplier(ctx)
                 print(amount)
             if self._max_balance_check(cookies + amount):
                 return await ctx.send(
