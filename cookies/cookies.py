@@ -149,7 +149,7 @@ class Cookies(commands.Cog):
 
         await um_conf.next_steal.set(cur_time + await conf.stealcd())
 
-        if random.randint(1, 100) > 90:
+        if random.randint(1, 100) > 50:
             cookies_stolen = int(target_cookies * 0.5)
             if cookies_stolen == 0:
                 cookies_stolen = 1
@@ -708,4 +708,4 @@ class Cookies(commands.Cog):
             else self.config.member(user)
         )
         return await conf.cookies()
-        # test 
+        # test
